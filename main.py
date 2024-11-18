@@ -39,5 +39,5 @@ def home_page() -> None:
 def add_page() -> None:
     add_stock()
 
-ui.run()
 
+ui.run()
