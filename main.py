@@ -19,7 +19,6 @@ def home_page() -> None:
                 ui.navigate.to("/")
             login_fail_info.set_text("登入失敗，請確認密碼")
 
-
         # login page
         with ui.label("").classes("absolute top-1/4 inset-x-1/3 w-1/3 rounded"):
             with ui.grid().classes("bg-sky-100 shadow-sm p-10"):
