@@ -1,7 +1,7 @@
-from nicegui import ui
+from nicegui import app, ui
 from pages.home import main_menu
 from pages.add_stock import add_stock
-import matplotlib.pyplot as plt
+from pages.group import show_group
 
 
 user = {"is_login": True}
@@ -17,7 +17,8 @@ def home_page() -> None:
             if password == "0000":
                 user["is_login"] = True
                 ui.navigate.to("/")
-            login_fail_info.set_text("登入失敗，請確認密碼")
+            else:
+                login_fail_info.set_text("登入失敗，請確認密碼")
 
         # login page
         with ui.label("").classes("absolute top-1/4 inset-x-1/3 w-1/3 rounded"):
@@ -37,6 +38,11 @@ def home_page() -> None:
 @ui.page(path="/add", title="選股程式-新增股票")
 def add_page() -> None:
     add_stock()
+
+
+@ui.page(path="/group/{group_type}/{upper_bound}/{lower_bound}")
+def group_page(group_type: str, upper_bound: float, lower_bound: float) -> None:
+    show_group(group_type, upper_bound, lower_bound)
 
 
 ui.run()

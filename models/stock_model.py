@@ -27,6 +27,10 @@ class StockModel:
     def get_df(self):
         return pd.read_sql_table("stocks", self.engine)
 
+    def get_selected_df(self):
+        df = pd.read_sql_table("stocks", self.engine)
+        return df[df["selected"] == 1].copy()
+
     def update_selected(self, keys: list):
         with self.Session() as session:
             # datas = session.query(Stock).filter(Stock.id.in_(keys)).all()
@@ -49,3 +53,6 @@ class StockModel:
             session.add(new_stock)
             session.commit()
 
+
+# remember url is depended on pages
+model_manger = StockModel("sqlite:///models/stocks.db")

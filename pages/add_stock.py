@@ -1,8 +1,8 @@
 from nicegui import ui
-from models.stock_model import StockModel
+from models.stock_model import model_manger
 
-# 導入資料庫管理物件
-model_manger = StockModel("sqlite:///models/stocks.db")
+# 導入資料庫管理物件(pages被導入main，從根目錄往下)
+model_manger = model_manger
 # 設定全域變數
 stock_df = model_manger.get_df()
 selected_stocks = []

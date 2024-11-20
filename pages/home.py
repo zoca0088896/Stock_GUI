@@ -20,9 +20,9 @@ def main_menu():
             ui.label(f"C組策略：當前區間目前不屬於A、B兩組股票")
             ui.label("選擇分組，進入自選股分組頁面：")
             with ui.row():
-                ui.button("A").classes("bg-red text-black text-lg")
-                ui.button("B").classes("bg-green text-black text-lg")
-                ui.button("C").classes("bg-yellow text-black text-lg")
+                ui.button("A", on_click=lambda: ui.navigate.to(f"/group/a/{upper_bound}/{lower_bound}")).classes("bg-red text-black text-lg")
+                ui.button("B", on_click=lambda: ui.navigate.to(f"/group/b/{upper_bound}/{lower_bound}")).classes("bg-green text-black text-lg")
+                ui.button("C", on_click=lambda: ui.navigate.to(f"/group/c/{upper_bound}/{lower_bound}")).classes("bg-yellow text-black text-lg")
         with ui.card().classes("col-start-3"):
             ui.label("修改策略")
             upper_num = ui.number(label="漲幅上限", value=1, step=0.1, min=0, format="%.1f",
