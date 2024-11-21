@@ -8,7 +8,7 @@ stock_df = model_manger.get_df()
 selected_stocks = []
 
 
-def add_stock():
+def add_stock() -> None:
     global selected_stocks
     with ui.grid(columns=4).classes("grid-flow-col"):
         # 所有股票標格，可加入篩選清單
@@ -22,8 +22,6 @@ def add_stock():
 
         # 添加新股票至清單
         new_stock_card()
-
-        # 將篩選股票列入已選擇
 
     ui.button("返回主頁", on_click=lambda: ui.navigate.to("/"))
 
@@ -131,7 +129,7 @@ def new_stock_card():
         input_type = ui.radio({"上市": "上市", "上櫃": "上櫃"}, value="上市")
         input_selected = ui.radio({0: "不列入觀察清單", 1: "列入"}, value=1)
         ui.button("新增股票", on_click=lambda: add_new_stock(stock_id=input_code.value,
-                                                             name=input_name.value,
-                                                             stock_type=input_type.value,
-                                                             selected=input_selected.value))
+                                                                name=input_name.value,
+                                                                stock_type=input_type.value,
+                                                                selected=input_selected.value))
 

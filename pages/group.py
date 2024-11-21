@@ -2,18 +2,22 @@ from nicegui import ui
 from apis.utils import FugleManger
 import plotly.graph_objects as go
 
+# prevent call api when this module be imported
 first_call = True
 group_manger = None
 
 
 @ui.refreshable
 def show_group(group_type, upper_bound, lower_bound):
+    # when first rendering, call api and create manger
     global first_call, group_manger
     if first_call:
         group_manger = FugleManger()
         first_call = False
+
     match group_type:
         case "a":
+            # check if selected stocks had changed
             group_manger.refresh_df()
             df_a = group_manger.group_a(percentage=1, upper_bound=upper_bound, lower_bound=lower_bound)
             with ui.row().classes("w-full"):
@@ -41,12 +45,13 @@ def group_card(group_df, color):
                 ui.label(f"{row['name']}").classes("text-3xl")
                 ui.separator().classes("bg-grey")
             with ui.card().classes("no-shadow bg-black row-start-2 row-end-3 col-span-1"):
-                colse_price, change, chage_percent = group_manger.refresh_single(row["stock_id"])
-                ui.label(f"{colse_price}").classes("text-4xl")
+                close_price, change, change_percent = group_manger.refresh_single(row["stock_id"])
+                ui.label(f"{close_price}").classes("text-4xl")
                 with ui.row():
                     ui.label(f"{change}").classes("text-2xl")
-                    ui.label(f"({chage_percent})%").classes("text-2xl")
-            fig_data = group_manger.get_candle(row['stock_id'])
+                    ui.label(f"({change_percent})%").classes("text-2xl")
+            # 以5分k請求資料
+            fig_data = group_manger.get_candle(row['stock_id'], "5")
             fig = go.Figure(data=go.Candlestick(x=fig_data["date"],
                                                 open=fig_data["open"],
                                                 high=fig_data["high"],

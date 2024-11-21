@@ -3,7 +3,7 @@ from nicegui import ui
 
 @ui.refreshable
 def main_menu():
-    # 百分比
+    # open and close strategy range state
     upper_bound, set_upper = ui.state(1)
     lower_bound, set_lower = ui.state(-2)
 

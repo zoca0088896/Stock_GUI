@@ -2,8 +2,6 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
-# engine = create_engine("sqlite:///stocks.db", echo=True)
-
 
 class Base(DeclarativeBase):
     pass
@@ -33,9 +31,6 @@ class StockModel:
 
     def update_selected(self, keys: list):
         with self.Session() as session:
-            # datas = session.query(Stock).filter(Stock.id.in_(keys)).all()
-            # for data in datas:
-            #     print(data.name)
             session.query(Stock).where(Stock.stock_id.in_(keys)).update({Stock.selected: 1})
             session.commit()
 
@@ -54,5 +49,5 @@ class StockModel:
             session.commit()
 
 
-# remember url is depended on pages
+# remember url is depended on which import module
 model_manger = StockModel("sqlite:///models/stocks.db")
