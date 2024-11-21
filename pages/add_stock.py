@@ -1,7 +1,7 @@
 from nicegui import ui
 from models.stock_model import model_manger
 
-# 導入資料庫管理物件(pages被導入main，從根目錄往下)
+# 導入資料庫管理物件
 model_manger = model_manger
 # 設定全域變數
 stock_df = model_manger.get_df()
@@ -113,7 +113,6 @@ def code_card():
         selected_code = ui.input("輸入股票代號")
         ui.button("納入預選", on_click=lambda: add_code(selected_code.value))
         ui.button("從觀察名單去除", on_click=lambda: unselected(selected_code.value))
-
 
 
 # 添加新股票組件

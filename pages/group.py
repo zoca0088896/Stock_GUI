@@ -1,42 +1,51 @@
 from nicegui import ui
-from api.utils import FugleManger
-import matplotlib.pyplot as plt
+from apis.utils import FugleManger
 import plotly.graph_objects as go
+
+first_call = True
+group_manger = None
 
 
 @ui.refreshable
 def show_group(group_type, upper_bound, lower_bound):
-    group_manger = FugleManger()
+    global first_call, group_manger
+    if first_call:
+        group_manger = FugleManger()
+        first_call = False
     match group_type:
         case "a":
-            ui.table.from_pandas(group_manger.group_a(1))
-            ui.label("a")
+            group_manger.refresh_df()
+            df_a = group_manger.group_a(percentage=1, upper_bound=upper_bound, lower_bound=lower_bound)
+            with ui.row().classes("w-full"):
+                group_card(df_a, "text-red")
         case "b":
-            df_b = group_manger.group_b(1)
+            group_manger.refresh_df()
+            df_b = group_manger.group_b(percentage=1, upper_bound=upper_bound, lower_bound=lower_bound)
             with ui.row().classes("w-full"):
-                group_card(group_manger, df_b)
-            ui.label("b")
-        case _:
-            df_c = group_manger.group_c(1)
+                group_card(df_b, "text-green")
+        case "c":
+            group_manger.refresh_df()
+            df_c = group_manger.group_c(percentage=1, upper_bound=upper_bound, lower_bound=lower_bound)
             with ui.row().classes("w-full"):
-                group_card(group_manger, df_c)
+                group_card(df_c, "text-yellow")
     ui.button("返回前一頁", on_click=ui.navigate.back).classes("fixed right-4 top-4")
 
 
 @ui.refreshable
-def group_card(group_manger, group_df):
+def group_card(group_df, color):
     def show_row(row):
-        with ui.grid(rows="1fr 3fr", columns="1fr 2fr").classes("bg-black gap-0 p-1 text-white "
+        with ui.grid(rows="1fr 3fr", columns="1fr 2fr").classes(f"bg-black gap-0 p-1 {color} "
                                                                 "basis-5/12 grow shrink-0"):
             with ui.card().classes("no-shadow p-1 bg-black row-start-1 row-end-2 col-span-1"):
                 ui.label(f"{row['stock_id']}").classes("text-2xl")
                 ui.label(f"{row['name']}").classes("text-3xl")
                 ui.separator().classes("bg-grey")
             with ui.card().classes("no-shadow bg-black row-start-2 row-end-3 col-span-1"):
-                ui.label(f"{row['目前股價']}").classes("text-4xl")
+                colse_price, change, chage_percent = group_manger.refresh_single(row["stock_id"])
+                ui.label(f"{colse_price}").classes("text-4xl")
                 with ui.row():
-                    ui.label(f"{row['漲跌']}").classes("text-2xl")
-                    ui.label(f"({row['目前漲跌百分比']})%").classes("text-2xl")
+                    ui.label(f"{change}").classes("text-2xl")
+                    ui.label(f"({chage_percent})%").classes("text-2xl")
             fig_data = group_manger.get_candle(row['stock_id'])
             fig = go.Figure(data=go.Candlestick(x=fig_data["date"],
                                                 open=fig_data["open"],

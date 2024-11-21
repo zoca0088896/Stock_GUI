@@ -1,10 +1,10 @@
-from nicegui import app, ui
+from nicegui import ui
 from pages.home import main_menu
 from pages.add_stock import add_stock
 from pages.group import show_group
 
 
-user = {"is_login": True}
+user = {"is_login": True, "password": "0000", "group_refresh": 30.0}
 
 
 @ui.page(path="/", title="選股程式-主頁")
@@ -14,7 +14,7 @@ def home_page() -> None:
         def get_auth() -> None:
             password = result.value
             # default password: 0000
-            if password == "0000":
+            if password == user["password"]:
                 user["is_login"] = True
                 ui.navigate.to("/")
             else:
@@ -40,9 +40,10 @@ def add_page() -> None:
     add_stock()
 
 
-@ui.page(path="/group/{group_type}/{upper_bound}/{lower_bound}")
+@ui.page(path="/group/{group_type}/{upper_bound}/{lower_bound}", title="分組查看")
 def group_page(group_type: str, upper_bound: float, lower_bound: float) -> None:
     show_group(group_type, upper_bound, lower_bound)
+    ui.timer(user["group_refresh"], lambda: show_group.refresh(group_type, upper_bound, lower_bound))
 
 
 ui.run()
