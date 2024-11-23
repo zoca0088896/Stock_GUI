@@ -22,12 +22,17 @@ class FugleManger:
             res = self.stock.intraday.quote(symbol=row["stock_id"])
             print(res)
             try:
-                percentage_range = round((res["openPrice"] - res["previousClose"]) / res["previousClose"] * 100, 2)
+                percentage_range = round(
+                    (res["openPrice"] - res["previousClose"]) / res["previousClose"] * 100, 2)
                 return (res["closePrice"], res["previousClose"], res["openPrice"],
                         percentage_range, res["change"], res["changePercent"])
             except KeyError:
                 # 沒開盤
                 return res["previousClose"], res["previousClose"], res["previousClose"], 0, 0, 0
+            except Exception as e:
+                # throw exception
+                print(e)
+                raise e
         self.selected_df[["currentPrice", "previous_close", "open_price", "open_change_range", "change", "change_percent"]] \
             = self.selected_df.apply(organize_helper, axis=1, result_type="expand")
 
@@ -57,10 +62,15 @@ class FugleManger:
             return res["previousClose"], 0, 0
 
     def get_candle(self, stock_id: str, timeframe: str):
-        res = self.stock.intraday.candles(symbol=stock_id, timeframe=timeframe)
-        data = res["data"]
-        fig_data = pd.DataFrame(data=data)
-        return fig_data
+        try:
+            res = self.stock.intraday.candles(
+                symbol=stock_id, timeframe=timeframe)
+            data = res["data"]
+            fig_data = pd.DataFrame(data=data)
+            return fig_data
+        except Exception as e:
+            # 刷新過快
+            raise e
 
     def refresh_df(self) -> None:
         sql_df = self.model_manger.get_selected_df()

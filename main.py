@@ -42,8 +42,10 @@ def add_page() -> None:
 @ui.page(path="/group/{group_type}/{upper_bound}/{lower_bound}", title="分組查看")
 def group_page(group_type: str, upper_bound: float, lower_bound: float) -> None:
     show_group(group_type, upper_bound, lower_bound)
-    # according user setting to refresh
-    ui.timer(user["group_refresh"], lambda: show_group.refresh(group_type, upper_bound, lower_bound))
+    # according user setting to refresh.
+    # default is 10s
+    ui.timer(user["group_refresh"], lambda: show_group.refresh(
+        group_type, upper_bound, lower_bound))
 
 
 ui.run()
