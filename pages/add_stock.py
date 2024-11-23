@@ -25,6 +25,18 @@ def add_stock() -> None:
 
     ui.button("返回主頁", on_click=lambda: ui.navigate.to("/"))
 
+    ui.run_javascript('''function showSelectedRow(){
+                                document.querySelectorAll('.q-tr').forEach((row) => {
+                                    if(row.children[5].innerText == '1'){ 
+                                    row.style.backgroundColor = 'blue'; 
+                                    row.style.color = 'white'; 
+                                    };
+                                });
+                              };
+                             setInterval(showSelectedRow, 100)       
+                          '''
+                      )
+
 
 # 預計放入股票的列表提示
 @ui.refreshable

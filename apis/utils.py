@@ -50,7 +50,6 @@ class FugleManger:
     # 定期刷新用
     def refresh_single(self, stock_id: str):
         res = self.stock.intraday.quote(symbol=stock_id)
-        print(res)
         try:
             return res["closePrice"], res["change"], res["changePercent"]
         except KeyError:
