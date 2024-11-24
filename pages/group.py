@@ -8,7 +8,7 @@ group_manger = None
 
 
 @ui.refreshable
-def show_group(group_type, upper_bound, lower_bound):
+def show_group(group_type, upper_bound, lower_bound) -> None:
     # when first rendering, call api and create manger
     global first_call, group_manger
     if first_call:
@@ -48,7 +48,7 @@ def show_group(group_type, upper_bound, lower_bound):
 
 
 @ui.refreshable
-def group_card(group_df, color, k_timeframe, set_k_timeframe):
+def group_card(group_df, color, k_timeframe, set_k_timeframe) -> None:
     def show_row(row):
         with ui.grid(rows="1fr 3fr", columns="1fr 2fr").classes(f"bg-black gap-0 p-1 {color} "
                                                                 "basis-5/12 grow shrink-0"):

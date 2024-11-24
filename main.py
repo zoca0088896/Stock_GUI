@@ -4,7 +4,7 @@ from pages.add_stock import add_stock
 from pages.group import show_group
 
 # temporary user data
-user = {"is_login": False, "password": "0000", "group_refresh": 10.0}
+user = {"is_login": False, "password": "0000", "group_refresh": 30.0}
 
 
 @ui.page(path="/", title="選股程式-主頁")
@@ -43,7 +43,7 @@ def add_page() -> None:
 def group_page(group_type: str, upper_bound: float, lower_bound: float) -> None:
     show_group(group_type, upper_bound, lower_bound)
     # according user setting to refresh.
-    # default is 10s
+    # default is 30s
     ui.timer(user["group_refresh"], lambda: show_group.refresh(
         group_type, upper_bound, lower_bound))
 

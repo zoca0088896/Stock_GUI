@@ -17,29 +17,31 @@ class Stock(Base):
 
 
 class StockModel:
-    def __init__(self, url):
+    def __init__(self, url) -> None:
         self.url = url
         self.engine = create_engine(self.url, echo=True)
         self.Session = sessionmaker(bind=self.engine)
 
-    def get_df(self):
+    def get_df(self) -> pd.DataFrame:
         return pd.read_sql_table("stocks", self.engine)
 
-    def get_selected_df(self):
+    def get_selected_df(self) -> pd.DataFrame:
         df = pd.read_sql_table("stocks", self.engine)
         return df[df["selected"] == 1].copy()
 
-    def update_selected(self, keys: list):
+    def update_selected(self, keys: list) -> None:
         with self.Session() as session:
-            session.query(Stock).where(Stock.stock_id.in_(keys)).update({Stock.selected: 1})
+            session.query(Stock).where(Stock.stock_id.in_(
+                keys)).update({Stock.selected: 1})
             session.commit()
 
-    def update_unselected(self, stock_id):
+    def update_unselected(self, stock_id) -> None:
         with self.Session() as session:
-            session.query(Stock).where(Stock.stock_id == stock_id).update({Stock.selected: 0})
+            session.query(Stock).where(Stock.stock_id ==
+                                       stock_id).update({Stock.selected: 0})
             session.commit()
 
-    def add_stock(self, stock_id, stock_name, stock_type, stock_selected=0):
+    def add_stock(self, stock_id, stock_name, stock_type, stock_selected=0) -> None:
         with self.Session() as session:
             new_stock = Stock(stock_id=stock_id,
                               name=stock_name,

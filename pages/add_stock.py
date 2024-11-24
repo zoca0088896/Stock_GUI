@@ -40,7 +40,7 @@ def add_stock() -> None:
 
 # 預計放入股票的列表提示
 @ui.refreshable
-def info_list(stock_list: list):
+def info_list(stock_list: list) -> None:
     with ui.card():
         label = ui.label(f"預計選入股票：{stock_list}").classes("text-2xl")
 
@@ -56,7 +56,7 @@ def info_list(stock_list: list):
 
 # 所有股票表格
 @ui.refreshable
-def stock_table():
+def stock_table() -> None:
     global stock_df
     table = ui.table.from_pandas(stock_df,
                                  pagination={"rowsPerPage": 10, "sortBy": "id"})
@@ -105,7 +105,7 @@ def stock_table():
 
 # 用代號添加股票到預選清單組件和輸入代號清除觀察名單
 @ui.refreshable
-def code_card():
+def code_card() -> None:
     with ui.card():
         def add_code(stock_code):
             global selected_stocks
@@ -119,7 +119,8 @@ def code_card():
             stock_df = model_manger.get_df()
             stock_table.refresh()
 
-        ui.label("輸入代號添加至觀察名單").classes("text-xl bg-blue w-full text-center text-slate-50")
+        ui.label("輸入代號添加至觀察名單").classes(
+            "text-xl bg-blue w-full text-center text-slate-50")
         selected_code = ui.input("輸入股票代號")
         ui.button("納入預選", on_click=lambda: add_code(selected_code.value))
         ui.button("從觀察名單去除", on_click=lambda: unselected(selected_code.value))
@@ -127,7 +128,7 @@ def code_card():
 
 # 添加新股票組件
 @ui.refreshable
-def new_stock_card():
+def new_stock_card() -> None:
     with ui.card():
         def add_new_stock(stock_id, name, stock_type, selected):
             global stock_df
@@ -135,13 +136,13 @@ def new_stock_card():
             stock_df = model_manger.get_df()
             stock_table.refresh()
 
-        ui.label("添加新上市櫃的股票").classes("text-xl bg-blue w-full text-center text-slate-50")
+        ui.label("添加新上市櫃的股票").classes(
+            "text-xl bg-blue w-full text-center text-slate-50")
         input_code = ui.input("輸入股票代號")
         input_name = ui.input("輸入股票名稱")
         input_type = ui.radio({"上市": "上市", "上櫃": "上櫃"}, value="上市")
         input_selected = ui.radio({0: "不列入觀察清單", 1: "列入"}, value=1)
         ui.button("新增股票", on_click=lambda: add_new_stock(stock_id=input_code.value,
-                                                                name=input_name.value,
-                                                                stock_type=input_type.value,
-                                                                selected=input_selected.value))
-
+                                                         name=input_name.value,
+                                                         stock_type=input_type.value,
+                                                         selected=input_selected.value))

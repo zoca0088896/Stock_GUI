@@ -9,7 +9,7 @@ load_dotenv()
 
 class FugleManger:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.model_manger = model_manger
         self.__end_point = os.getenv("FUGLE_API_ENDPOINT")
         self.client = RestClient(api_key=os.getenv("FUGLE_API_SECRET"))
@@ -17,10 +17,9 @@ class FugleManger:
         self.selected_df = self.model_manger.get_selected_df()
         self.__organize_df()
 
-    def __organize_df(self):
+    def __organize_df(self) -> None:
         def organize_helper(row):
             res = self.stock.intraday.quote(symbol=row["stock_id"])
-            print(res)
             try:
                 percentage_range = round(
                     (res["openPrice"] - res["previousClose"]) / res["previousClose"] * 100, 2)
@@ -36,24 +35,24 @@ class FugleManger:
         self.selected_df[["currentPrice", "previous_close", "open_price", "open_change_range", "change", "change_percent"]] \
             = self.selected_df.apply(organize_helper, axis=1, result_type="expand")
 
-    def group_a(self, percentage: float, upper_bound: float, lower_bound: float):
+    def group_a(self, percentage: float, upper_bound: float, lower_bound: float) -> pd.DataFrame:
         df_a = self.selected_df[(self.selected_df["open_change_range"] <= upper_bound)
                                 & (self.selected_df["open_change_range"] >= lower_bound)]
         return df_a[df_a["change_percent"] >= percentage]
 
-    def group_b(self, percentage: float, upper_bound: float, lower_bound: float):
+    def group_b(self, percentage: float, upper_bound: float, lower_bound: float) -> pd.DataFrame:
         df_b = self.selected_df[(self.selected_df["open_change_range"] <= upper_bound)
                                 & (self.selected_df["open_change_range"] >= lower_bound)]
         return df_b[df_b["change_percent"] <= -percentage]
 
-    def group_c(self, percentage: float, upper_bound: float, lower_bound: float):
+    def group_c(self, percentage: float, upper_bound: float, lower_bound: float) -> pd.DataFrame:
         df_c = self.selected_df[(self.selected_df["open_change_range"] <= upper_bound)
                                 & (self.selected_df["open_change_range"] >= lower_bound)]
         return df_c[(df_c["change_percent"] <= percentage)
                     & (df_c["change_percent"] >= -percentage)]
 
     # 定期刷新用
-    def refresh_single(self, stock_id: str):
+    def refresh_single(self, stock_id: str) -> tuple:
         res = self.stock.intraday.quote(symbol=stock_id)
         try:
             return res["closePrice"], res["change"], res["changePercent"]
@@ -61,7 +60,7 @@ class FugleManger:
             # 沒開盤
             return res["previousClose"], 0, 0
 
-    def get_candle(self, stock_id: str, timeframe: str):
+    def get_candle(self, stock_id: str, timeframe: str) -> pd.DataFrame:
         try:
             res = self.stock.intraday.candles(
                 symbol=stock_id, timeframe=timeframe)
