@@ -31,10 +31,10 @@ def main_menu() -> None:
         with ui.card().classes("col-start-3"):
             ui.label("修改開盤策略").classes(
                 "text-xl bg-blue w-full text-center text-slate-50")
-            upper_num = ui.number(label="漲幅上限", value=1, step=0.1, min=0, format="%.1f",
+            upper_num = ui.number(label="漲幅上限", value=upper_bound, step=0.1, min=0, format="%.1f",
                                   on_change=lambda e: new_upper_info.set_text(f"漲幅上限修改至: +{e.value}%"))
             new_upper_info = ui.label()
-            lower_num = ui.number(label="跌幅下限", value=-2, step=0.1, max=0, format="%.1f",
+            lower_num = ui.number(label="跌幅下限", value=lower_bound, step=0.1, max=0, format="%.1f",
                                   on_change=lambda e: new_lower_info.set_text(f"跌幅下限修改至: {e.value}%"))
             new_lower_info = ui.label()
             with ui.row():

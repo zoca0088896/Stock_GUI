@@ -24,11 +24,11 @@ def add_stock() -> None:
         new_stock_card()
 
     ui.button("返回主頁", on_click=lambda: ui.navigate.to("/"))
-
+    # 顯示目前選擇的股票，並以藍色標記
     ui.run_javascript('''function showSelectedRow(){
                                 document.querySelectorAll('.q-tr').forEach((row) => {
                                     if(row.children[5].innerText == '1'){ 
-                                    row.style.backgroundColor = 'blue'; 
+                                    row.style.backgroundColor = '#0079FF'; 
                                     row.style.color = 'white'; 
                                     };
                                 });
