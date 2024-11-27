@@ -39,13 +39,13 @@ def add_page() -> None:
     add_stock()
 
 
-@ui.page(path="/group/{group_type}/{upper_bound}/{lower_bound}", title="分組查看")
-def group_page(group_type: str, upper_bound: float, lower_bound: float) -> None:
-    show_group(group_type, upper_bound, lower_bound)
+@ui.page(path="/group/{group_type}/{upper_bound}/{lower_bound}/{strategy_num}", title="分組查看")
+def group_page(group_type: str, upper_bound: float, lower_bound: float, strategy_num: float) -> None:
+    show_group(group_type, upper_bound, lower_bound, strategy_num)
     # according user setting to refresh.
     # default is 30s
     ui.timer(user["group_refresh"], lambda: show_group.refresh(
-        group_type, upper_bound, lower_bound))
+        group_type, upper_bound, lower_bound, strategy_num))
 
 
 ui.run()

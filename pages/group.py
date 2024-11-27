@@ -8,7 +8,7 @@ group_manger = None
 
 
 @ui.refreshable
-def show_group(group_type, upper_bound, lower_bound) -> None:
+def show_group(group_type, upper_bound, lower_bound, strategy_num) -> None:
     # when first rendering, call api and create manger
     global first_call, group_manger
     if first_call:
@@ -23,20 +23,20 @@ def show_group(group_type, upper_bound, lower_bound) -> None:
                 # check if selected stocks had changed
                 group_manger.refresh_df()
                 df_a = group_manger.group_a(
-                    percentage=1, upper_bound=upper_bound, lower_bound=lower_bound)
+                    percentage=strategy_num, upper_bound=upper_bound, lower_bound=lower_bound)
                 with ui.row().classes("w-full"):
                     group_card(df_a, "text-red", k_timeframe, set_k_timeframe)
             case "b":
                 group_manger.refresh_df()
                 df_b = group_manger.group_b(
-                    percentage=1, upper_bound=upper_bound, lower_bound=lower_bound)
+                    percentage=strategy_num, upper_bound=upper_bound, lower_bound=lower_bound)
                 with ui.row().classes("w-full"):
                     group_card(df_b, "text-green",
                                k_timeframe, set_k_timeframe)
             case "c":
                 group_manger.refresh_df()
                 df_c = group_manger.group_c(
-                    percentage=1, upper_bound=upper_bound, lower_bound=lower_bound)
+                    percentage=strategy_num, upper_bound=upper_bound, lower_bound=lower_bound)
                 with ui.row().classes("w-full"):
                     group_card(df_c, "text-yellow",
                                k_timeframe, set_k_timeframe)
