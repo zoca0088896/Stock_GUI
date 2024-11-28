@@ -24,22 +24,23 @@ def show_group(group_type, upper_bound, lower_bound, strategy_num) -> None:
                 group_manger.refresh_df()
                 df_a = group_manger.group_a(
                     percentage=strategy_num, upper_bound=upper_bound, lower_bound=lower_bound)
-                with ui.row().classes("w-full"):
+                with ui.grid(rows=df_a.shape[0]+1, columns="1fr 1fr").classes("w-full bg-black gap-1 p-1"):
                     group_card(df_a, "text-red", k_timeframe, set_k_timeframe)
             case "b":
                 group_manger.refresh_df()
                 df_b = group_manger.group_b(
                     percentage=strategy_num, upper_bound=upper_bound, lower_bound=lower_bound)
-                with ui.row().classes("w-full"):
+                with ui.grid(rows=df_b.shape[0]+1, columns="1fr 1fr").classes("w-full bg-black gap-1 p-1"):
                     group_card(df_b, "text-green",
                                k_timeframe, set_k_timeframe)
             case "c":
                 group_manger.refresh_df()
                 df_c = group_manger.group_c(
                     percentage=strategy_num, upper_bound=upper_bound, lower_bound=lower_bound)
-                with ui.row().classes("w-full"):
+                with ui.grid(rows=df_c.shape[0]+1, columns="1fr 1fr").classes("w-full bg-black gap-1 p-1"):
                     group_card(df_c, "text-yellow",
                                k_timeframe, set_k_timeframe)
+
     except Exception as e:
         # 基本方案可能會發生API速率限制問題，所以用try catch來處理
         ui.notify(f"Error: 刷新速度過快，已超過API速率限制60/min，請稍後再試。{e}")
@@ -51,7 +52,7 @@ def show_group(group_type, upper_bound, lower_bound, strategy_num) -> None:
 def group_card(group_df, color, k_timeframe, set_k_timeframe) -> None:
     def show_row(row):
         with ui.grid(rows="1fr 3fr", columns="1fr 2fr").classes(f"bg-black gap-0 p-1 {color} "
-                                                                "basis-5/12 grow shrink-0"):
+                                                                "basis-5/12 grow shrink-0 border-2 border-lime-400"):
             with ui.card().classes("no-shadow p-1 bg-black row-start-1 row-end-2 col-span-1"):
                 ui.label(f"{row['stock_id']}").classes("text-2xl")
                 ui.label(f"{row['name']}").classes("text-3xl")
