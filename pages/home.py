@@ -18,7 +18,8 @@ def main_menu() -> None:
         with ui.card().classes("col-start-2"):
             ui.label("分組股票查看").classes(
                 "text-xl bg-blue w-full text-center text-slate-50")
-            ui.label(f"當前開盤漲跌區間：+{upper_bound}% ~ {lower_bound}%")
+            ui.label(
+                f"當前開盤漲跌區間： +{upper_bound}% ~ {lower_bound}%")
             ui.label(f"A組策略：當前區間目前上漲{group_strategy}%以上股票")
             ui.label(f"B組策略：當前區間目前下跌{group_strategy}%以上股票")
             ui.label(f"C組策略：當前區間目前不屬於A、B兩組股票")

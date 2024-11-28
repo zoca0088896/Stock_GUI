@@ -1,5 +1,5 @@
 {
-  "is_login": true,
+  "is_login": false,
   "password": "0000",
   "group_refresh": 30.0
 }

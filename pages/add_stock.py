@@ -42,6 +42,8 @@ def add_stock() -> None:
 @ui.refreshable
 def info_list(stock_list: list) -> None:
     with ui.card():
+        ui.label("預選列表：").classes(
+            "text-xl bg-blue w-full text-center text-slate-50")
         label = ui.label(f"預計選入股票：{stock_list}").classes("text-2xl")
 
         def change_data():
