@@ -2,9 +2,11 @@ from nicegui import ui
 from pages.home import main_menu
 from pages.add_stock import add_stock
 from pages.group import show_group
+import json
 
 # temporary user data
-user = {"is_login": True, "password": "0000", "group_refresh": 30.0}
+with open("user.json", "r") as f:
+    user = json.load(f)
 
 
 @ui.page(path="/", title="選股程式-主頁")
