@@ -1,4 +1,4 @@
-from nicegui import ui
+from nicegui import ui, background_tasks
 from setting.user import UserSetting
 
 
@@ -16,33 +16,36 @@ def main_menu() -> None:
             ui.label("分組股票查看").classes(
                 "text-xl bg-blue w-full text-center text-slate-50")
             ui.label(
-                f"A組策略：+{user.upper_bound_a}% ~ {user.lower_bound_a}%區間目前上漲{user.group_strategy_a}%以上股票")
+                f"A組策略：\n\t+{user.upper_bound_a} % ~ {user.lower_bound_a} % 區間開盤，目前上漲{user.group_strategy_a} % 以上股票"
+                f"\n\t突破提醒值：{user.group_strategy_a}% + {user.group_notify_a}%").style("white-space: pre-wrap")
             ui.label(
-                f"B組策略：+{user.upper_bound_b}% ~ {user.lower_bound_b}%區間目前下跌{user.group_strategy_b}%以上股票")
+                f"B組策略：\n\t+{user.upper_bound_b}% ~ {user.lower_bound_b}%區間開盤，目前下跌{user.group_strategy_b}%以上股票"
+                f"\n\t下跌提醒值：-{user.group_strategy_b}% - {user.group_notify_b}%").style("white-space: pre-wrap;")
             ui.label(
-                f"C組策略：+{user.upper_bound_c}% ~ {user.lower_bound_c}%區間目前漲跌在{user.group_strategy_c}%內的股票")
+                f"C組策略：\n\t+{user.upper_bound_c}% ~ {user.lower_bound_c}%區間開盤，目前漲跌在{user.group_strategy_c}%內的股票"
+                f"\n\t區間提醒值：±{user.group_notify_c}%").style("white-space: pre-wrap;")
             ui.label("選擇分組，進入自選股分組頁面：")
             with ui.row():
                 ui.button("A", on_click=lambda: ui.navigate.to(
-                    f"/group/a/{user.upper_bound_a}/{user.lower_bound_a}/{user.group_strategy_a}")).classes("bg-red text-black text-lg")
+                    f"/group/a/{user.upper_bound_a}/{user.lower_bound_a}/{user.group_strategy_a}/{user.group_notify_a}")).classes("bg-red text-black text-lg")
                 ui.button("B", on_click=lambda: ui.navigate.to(
-                    f"/group/b/{user.upper_bound_b}/{user.lower_bound_b}/{user.group_strategy_b}")).classes("bg-green text-black text-lg")
+                    f"/group/b/{user.upper_bound_b}/{user.lower_bound_b}/{user.group_strategy_b}/{user.group_notify_b}")).classes("bg-green text-black text-lg")
                 ui.button("C", on_click=lambda: ui.navigate.to(
-                    f"/group/c/{user.upper_bound_c}/{user.lower_bound_c}/{user.group_strategy_c}")).classes("bg-yellow text-black text-lg")
+                    f"/group/c/{user.upper_bound_c}/{user.lower_bound_c}/{user.group_strategy_c}/{user.group_notify_c}")).classes("bg-yellow text-black text-lg")
         # 修改各分組策略
         with ui.card().classes("col-start-3"):
             ui.label("修改A組策略").classes(
                 "text-xl bg-blue w-full text-center text-slate-50")
             group_setting(user.upper_bound_a, user.lower_bound_a,
-                          user.group_strategy_a, user.set_new_bound_a)
+                          user.group_strategy_a, user.group_notify_a, user.set_new_bound_a)
             ui.label("修改B組策略").classes(
                 "text-xl bg-blue w-full text-center text-slate-50")
             group_setting(user.upper_bound_b, user.lower_bound_b,
-                          user.group_strategy_b, user.set_new_bound_b)
+                          user.group_strategy_b, user.group_notify_b, user.set_new_bound_b)
             ui.label("修改C組策略").classes(
                 "text-xl bg-blue w-full text-center text-slate-50")
             group_setting(user.upper_bound_c, user.lower_bound_c,
-                          user.group_strategy_c, user.set_new_bound_c)
+                          user.group_strategy_c, user.group_notify_c, user.set_new_bound_c)
         # 新增自選股
         with ui.card().classes("col-start-4"):
             ui.label("新增自選股").classes(
@@ -52,11 +55,12 @@ def main_menu() -> None:
 
 
 # 各組策略修改card row
-def group_setting(upper_bound, lower_bound, group_strategy, set_new_bound) -> None:
+def group_setting(upper_bound, lower_bound, group_strategy, user_notify, set_new_bound) -> None:
     with ui.row():
         new_upper_info = ui.label().classes("text-sm")
         new_lower_info = ui.label().classes("text-sm")
         new_group_strategy = ui.label().classes("text-sm")
+        new_notify_info = ui.label().classes("text-sm")
     with ui.row():
         upper_num = ui.number(label="開盤漲幅上限", value=upper_bound, step=0.1, min=0, format="%.1f",
                               on_change=lambda e: new_upper_info.set_text(f"漲幅上限修改至: +{e.value}%"))
@@ -66,10 +70,12 @@ def group_setting(upper_bound, lower_bound, group_strategy, set_new_bound) -> No
 
         strategy_num = ui.number(label="當前漲跌", value=group_strategy, step=0.1, min=0, format="%.1f",
                                  on_change=lambda e: new_group_strategy.set_text(f"新的漲跌修改至: {e.value}%"))
+        notify_num = ui.number(label="區間提醒值", value=user_notify, step=0.1, format="%.1f",
+                               on_change=lambda e: new_notify_info.set_text(f"突破提醒值修改至: {e.value}%"))
     with ui.row():
-        ui.button("回復預設範圍", on_click=lambda: set_new_bound(1.0, -2.0, 1.0)
+        ui.button("回復預設範圍", on_click=lambda: set_new_bound(1.0, -2.0, 1.0, 0.5)
                   ).classes("text-lg")
         ui.button(text="確認修改",
                   on_click=lambda: set_new_bound(
-                      upper_num.value, lower_num.value, strategy_num.value)
+                      upper_num.value, lower_num.value, strategy_num.value, notify_num.value)
                   ).classes("text-lg")
