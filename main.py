@@ -6,7 +6,7 @@ import json
 
 # temporary user data
 with open("user.json", "r") as f:
-    user = json.load(f)
+    user = json.load(f)[0]
 
 
 @ui.page(path="/", title="選股程式-主頁")
