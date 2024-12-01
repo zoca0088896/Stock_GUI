@@ -17,10 +17,10 @@ def main_menu() -> None:
                 "text-xl bg-blue w-full text-center text-slate-50")
             ui.label(
                 f"A組策略：\n\t+{user.upper_bound_a} % ~ {user.lower_bound_a} % 區間開盤，目前上漲{user.group_strategy_a} % 以上股票"
-                f"\n\t突破提醒值：{user.group_strategy_a}% + {user.group_notify_a}%").style("white-space: pre-wrap")
+                f"\n\t突破提醒值：每 +{user.group_notify_a}%").style("white-space: pre-wrap")
             ui.label(
                 f"B組策略：\n\t+{user.upper_bound_b}% ~ {user.lower_bound_b}%區間開盤，目前下跌{user.group_strategy_b}%以上股票"
-                f"\n\t下跌提醒值：-{user.group_strategy_b}% - {user.group_notify_b}%").style("white-space: pre-wrap;")
+                f"\n\t下跌提醒值：每 -{user.group_notify_b}%").style("white-space: pre-wrap;")
             ui.label(
                 f"C組策略：\n\t+{user.upper_bound_c}% ~ {user.lower_bound_c}%區間開盤，目前漲跌在{user.group_strategy_c}%內的股票"
                 f"\n\t區間提醒值：±{user.group_notify_c}%").style("white-space: pre-wrap;")

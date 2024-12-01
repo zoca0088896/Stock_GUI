@@ -3,6 +3,7 @@ from pages.home import main_menu
 from pages.add_stock import add_stock
 from pages.group import show_group
 import json
+import datetime as dt
 
 # temporary user data
 with open("user.json", "r") as f:
@@ -46,8 +47,11 @@ def group_page(group_type: str, upper_bound: float, lower_bound: float, strategy
     show_group(group_type, upper_bound, lower_bound, strategy_num, notify_num)
     # according user setting to refresh.
     # default is 30s
-    ui.timer(user["group_refresh"], lambda: show_group.refresh(
-        group_type, upper_bound, lower_bound, strategy_num, notify_num))
+    # only refresh at 9:00 ~ 13:30
+    now = dt.datetime.now()
+    if now.time() >= dt.time(9, 0) and now.time() <= dt.time(13, 30):
+        ui.timer(user["group_refresh"], lambda: show_group.refresh(
+            group_type, upper_bound, lower_bound, strategy_num, notify_num))
 
 
 ui.run()
