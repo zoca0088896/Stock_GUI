@@ -1,6 +1,6 @@
 [
   {
-    "is_login": false,
+    "is_login": true,
     "password": "0000",
     "group_refresh": 30.0
   },
@@ -12,9 +12,9 @@
       "notify": 0.5
     },
     "group_b": {
-      "upper": 1.0,
-      "lower": -2.0,
-      "strategy": 1.0,
+      "upper": 3.0,
+      "lower": 0.0,
+      "strategy": 0.1,
       "notify": 0.5
     },
     "group_c": {

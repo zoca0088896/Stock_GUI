@@ -3,6 +3,7 @@ from models.stock_model import model_manger
 from fugle_marketdata import RestClient
 from dotenv import load_dotenv
 import os
+import datetime as dt
 
 load_dotenv()
 
@@ -65,8 +66,20 @@ class FugleManger:
             res = self.stock.intraday.candles(
                 symbol=stock_id, timeframe=timeframe)
             data = res["data"]
-            fig_data = pd.DataFrame(data=data)
-            return fig_data
+            if data:
+                fig_data = pd.DataFrame(data=data)
+                return fig_data
+            else:
+                # fix no candle data issue
+                return pd.DataFrame([{
+                    "date": dt.datetime.today(),
+                    "open": 0,
+                    "high": 0,
+                    "low": 0,
+                    "close": 0,
+                    "volume": 0,
+                    "average": 0
+                }])
         except Exception as e:
             # 刷新過快
             raise e
