@@ -1,5 +1,6 @@
 from nicegui import ui
 from models.stock_model import model_manger
+from setting.dark_mode import DarkMode
 
 # 導入資料庫管理物件
 model_manger = model_manger
@@ -22,6 +23,10 @@ def add_stock() -> None:
 
         # 添加新股票至清單
         new_stock_card()
+
+    # dark mode
+    dark_mode = DarkMode()
+    dark_mode.show_switch()
 
     ui.button("返回主頁", on_click=lambda: ui.navigate.to("/"))
     # 顯示目前選擇的股票，並以藍色標記

@@ -1,5 +1,6 @@
 from nicegui import ui, background_tasks
 from setting.user import UserSetting
+from setting.dark_mode import DarkMode
 
 
 @ui.refreshable
@@ -53,8 +54,13 @@ def main_menu() -> None:
             ui.label("將指定股票加入/移除觀察清單")
             ui.button("前往新增", on_click=lambda: ui.navigate.to("/add"))
 
+    # dark mode
+    dark_mode = DarkMode()
+    dark_mode.show_switch()
 
 # 各組策略修改card row
+
+
 def group_setting(upper_bound, lower_bound, group_strategy, user_notify, set_new_bound) -> None:
     with ui.row():
         new_upper_info = ui.label().classes("text-sm")

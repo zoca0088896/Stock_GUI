@@ -4,6 +4,8 @@ from pages.add_stock import add_stock
 from pages.group import show_group
 import json
 import datetime as dt
+from setting.dark_mode import DarkMode
+
 
 # temporary user data
 with open("user.json", "r") as f:
@@ -24,13 +26,17 @@ def home_page() -> None:
 
         # login page
         with ui.label("").classes("absolute top-1/4 inset-x-1/3 w-1/3 rounded"):
-            with ui.grid().classes("bg-sky-100 shadow-sm p-10"):
+            with ui.grid().classes("shadow-sm p-10 border-solid border-2 border-cyan-500"):
                 login_label = ui.label("選股網").classes("text-center text-2xl")
                 result = ui.input(label="請輸入密碼",
                                   password=True)
                 ui.button(text="登入",
                           on_click=get_auth)
                 login_fail_info = ui.label("")
+
+        # dark mode
+        dark_mode = DarkMode()
+        dark_mode.show_switch()
 
     else:
         # home page menu

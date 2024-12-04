@@ -2,6 +2,7 @@ from nicegui import ui
 from apis.utils import FugleManger
 import plotly.graph_objects as go
 import datetime as dt
+from setting.dark_mode import DarkMode
 
 # prevent call api when this module be imported
 first_call = True
@@ -49,6 +50,10 @@ def show_group(group_type, upper_bound, lower_bound, strategy_num, notify_num) -
     ui.button("返回前一頁", on_click=ui.navigate.back).classes(
         "fixed right-4 top-4")
 
+    # dark mode
+    dark_mode = DarkMode()
+    dark_mode.show_switch()
+
 
 @ui.refreshable
 def group_card(group_df, color, k_timeframe, set_k_timeframe, strategy_num, notify_num, group_type) -> None:
@@ -66,13 +71,13 @@ def group_card(group_df, color, k_timeframe, set_k_timeframe, strategy_num, noti
 
     # 分開渲染刷新單一股票
     def show_row(row):
-        with ui.grid(rows="1fr 3fr", columns="1fr 2fr").classes(f"bg-black gap-0 p-1 {color} "
+        with ui.grid(rows="1fr 3fr", columns="1fr 2fr").classes(f"bg-black gap-0 p-1"
                                                                 "basis-5/12 grow shrink-0 border-2 border-lime-400"):
-            with ui.card().classes("no-shadow p-1 bg-black row-start-1 row-end-2 col-span-1"):
+            with ui.card().classes(f"no-shadow p-1 bg-black row-start-1 row-end-2 col-span-1 {color}"):
                 ui.label(f"{row['stock_id']}").classes("text-2xl")
                 ui.label(f"{row['name']}").classes("text-3xl")
                 ui.separator().classes("bg-grey")
-            with ui.card().classes("no-shadow bg-black row-start-2 row-end-3 col-span-1"):
+            with ui.card().classes(f"no-shadow bg-black row-start-2 row-end-3 col-span-1 {color}"):
                 close_price, change, change_percent = group_manger.refresh_single(
                     row["stock_id"])
                 ui.label(f"{close_price}").classes("text-4xl")

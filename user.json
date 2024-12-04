@@ -1,27 +1,28 @@
 [
-  {
-    "is_login": true,
-    "password": "0000",
-    "group_refresh": 30.0
-  },
-  {
-    "group_a": {
-      "upper": 1.0,
-      "lower": -2.0,
-      "strategy": 1.0,
-      "notify": 0.5
+    {
+        "is_login": false,
+        "password": "0000",
+        "group_refresh": 30.0,
+        "dark": true
     },
-    "group_b": {
-      "upper": 3.0,
-      "lower": 0.0,
-      "strategy": 0.1,
-      "notify": 0.5
-    },
-    "group_c": {
-      "upper": 1.0,
-      "lower": -2.0,
-      "strategy": 1.0,
-      "notify": 0.5
+    {
+        "group_a": {
+            "upper": 1.0,
+            "lower": -2.0,
+            "strategy": 1.0,
+            "notify": 0.5
+        },
+        "group_b": {
+            "upper": 3.0,
+            "lower": 0.0,
+            "strategy": 0.1,
+            "notify": 0.5
+        },
+        "group_c": {
+            "upper": 1.0,
+            "lower": -2.0,
+            "strategy": 1.0,
+            "notify": 0.5
+        }
     }
-  }
 ]
