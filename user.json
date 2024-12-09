@@ -1,0 +1,25 @@
+[
+    {
+        "is_login": true,
+        "password": "0000",
+        "group_refresh": 30.0,
+        "dark": true
+    },
+    {
+        "group_a": {
+            "upper": 1.0,
+            "lower": -2.0,
+            "strategy": 1.0
+        },
+        "group_b": {
+            "upper": 1.0,
+            "lower": -2.0,
+            "strategy": 0.1
+        },
+        "group_c": {
+            "upper": 100.0,
+            "lower": -100.0,
+            "strategy": 0.1
+        }
+    }
+]
