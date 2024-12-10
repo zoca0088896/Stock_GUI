@@ -16,8 +16,6 @@ def show_group(group_type, upper_bound, lower_bound, strategy_num) -> None:
     if first_call:
         group_manger = FugleManger()
         first_call = False
-    # group card會刷新，所以要將state定義移動到parent內
-    # 預設以5分k請求資料
     try:
         match group_type:
             case "a":
@@ -57,7 +55,7 @@ def show_group(group_type, upper_bound, lower_bound, strategy_num) -> None:
 @ui.refreshable
 def group_card(group_df, color, strategy_num, group_type) -> None:
 
-    # 時間，10點前才會警示ab，c則是9:15後到收盤
+    # 時間，c是9:15後到收盤
     now = dt.datetime.now()
 
     # 提醒鈴聲
@@ -79,12 +77,20 @@ def group_card(group_df, color, strategy_num, group_type) -> None:
             with ui.card().classes(f"no-shadow bg-black row-start-2 row-end-3 col-span-1 {color}"):
                 close_price, change, change_percent = group_manger.refresh_single(
                     row["代號"])
+                # 更新後連同selected_df資料一起更新
+                group_manger.selected_df.loc[group_manger.selected_df["代號"]
+                                             == row["代號"], "currentPrice"] = close_price
+                group_manger.selected_df.loc[group_manger.selected_df["代號"]
+                                             == row["代號"], "change"] = change
+                group_manger.selected_df.loc[group_manger.selected_df["代號"]
+                                             == row["代號"], "change_percent"] = change_percent
+
                 ui.label(f"{close_price}").classes("text-4xl")
                 with ui.row():
                     ui.label(f"{change}").classes("text-2xl")
                     ui.label(f"({change_percent})%").classes("text-2xl")
             # 看情況在特定時間通知
-            if dt.time(0, 0) < now.time() < dt.time(21, 30):
+            if dt.time(9, 15) <= now.time() <= dt.time(13, 30):
                 if change_percent >= strategy_num and group_type == "c":
                     # c group
                     alert_notify(

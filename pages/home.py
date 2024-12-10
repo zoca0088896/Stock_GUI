@@ -20,10 +20,10 @@ def main_menu() -> None:
                 f"A組策略：\n\t+{user.upper_bound_a} % ~ {user.lower_bound_a} % 區間開盤，目前上漲{user.group_strategy_a} % 以上股票"
             )
             ui.label(
-                f"B組策略：\n\t+{user.upper_bound_b}% ~ {user.lower_bound_b}%區間開盤，目前下跌{user.group_strategy_b}%以上股票"
+                f"B組策略：\n\t+{user.upper_bound_b}% ~ {user.lower_bound_b}%區間開盤，目前下跌-{user.group_strategy_b}%以上股票"
             )
             ui.label(
-                f"C組策略：\n\t+{user.upper_bound_c}% ~ {user.lower_bound_c}%區間開盤，突破開盤後15分鐘內最高值{user.group_strategy_c}%以上的股票"
+                f"C組策略：\n\t+{user.upper_bound_c}% ~ {user.lower_bound_c}%區間開盤，突破開盤後15分鐘內最高價格，且突破{user.group_strategy_c}%以上的股票"
             )
             ui.label("選擇分組，進入自選股分組頁面：")
             with ui.row():

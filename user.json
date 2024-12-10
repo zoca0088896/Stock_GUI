@@ -7,19 +7,19 @@
     },
     {
         "group_a": {
-            "upper": 1.0,
+            "upper": 10.0,
             "lower": -2.0,
             "strategy": 1.0
         },
         "group_b": {
             "upper": 1.0,
             "lower": -2.0,
-            "strategy": 0.1
+            "strategy": 1.0
         },
         "group_c": {
-            "upper": 100.0,
-            "lower": -100.0,
-            "strategy": 0.1
+            "upper": 10.0,
+            "lower": -10.0,
+            "strategy": 1.0
         }
     }
 ]

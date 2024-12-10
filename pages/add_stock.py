@@ -23,8 +23,9 @@ def add_stock() -> None:
     dark_mode = DarkMode()
     dark_mode.show_switch()
 
-    ui.button("返回主頁", on_click=lambda: ui.navigate.to("/"))
-    
+    ui.button("返回主頁", on_click=lambda: ui.navigate.to("/")).classes(
+        "fixed right-2 bottom-20")
+
 
 # 預計放入股票的列表提示
 @ui.refreshable
@@ -34,8 +35,8 @@ def info_list() -> None:
         ui.label("觀察中：").classes(
             "text-xl bg-blue w-full text-center text-slate-50")
         table = ui.table.from_pandas(stock_df[stock_df["觀察中"] == 1][["代號", "名稱", "市場"]],
-                                 pagination={"rowsPerPage": 15, "sortBy": "代號"}).classes('w-full')
-        
+                                     pagination={"rowsPerPage": 15, "sortBy": "代號"}).classes('w-full')
+
         table.add_slot('header', r'''
         <q-tr :props="props">
             <q-th auto-width> 從觀察移除 </q-th>
@@ -56,6 +57,7 @@ def info_list() -> None:
             </q-td>
         </q-tr>
         ''')
+
         def remove_select(msg):
             global stock_df
             model_manger.update_unselected(msg.args["row"]["代號"])
@@ -65,6 +67,8 @@ def info_list() -> None:
         table.on("remove", lambda msg: remove_select(msg))
 
 # 所有股票表格
+
+
 @ui.refreshable
 def stock_table() -> None:
     global stock_df
@@ -72,7 +76,7 @@ def stock_table() -> None:
         ui.label("可選入股票：").classes(
             "text-xl bg-blue w-full text-center text-slate-50")
         table = ui.table.from_pandas(stock_df[stock_df["觀察中"] == 0][["代號", "名稱", "市場"]],
-                                    pagination={"rowsPerPage": 15, "sortBy": "代號"}).classes('w-full')
+                                     pagination={"rowsPerPage": 15, "sortBy": "代號"}).classes('w-full')
         table.add_slot('header', r'''
             <q-tr :props="props">
                 <q-th auto-width> 加入觀察 </q-th>
@@ -94,6 +98,7 @@ def stock_table() -> None:
                 </q-td>
             </q-tr>
         ''')
+
         def add_select(msg):
             global stock_df
             model_manger.update_selected_by_id(msg.args["row"]["代號"])
@@ -146,4 +151,3 @@ def new_stock_card() -> None:
         selected_code = ui.input("輸入股票代號")
         ui.button("納入觀察", on_click=lambda: add_code(selected_code.value))
         ui.button("從觀察名單去除", on_click=lambda: unselected(selected_code.value))
-   
