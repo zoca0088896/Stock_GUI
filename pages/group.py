@@ -89,16 +89,11 @@ def group_card(group_df, color, strategy_num, group_type) -> None:
                 with ui.row():
                     ui.label(f"{change}").classes("text-2xl")
                     ui.label(f"({change_percent})%").classes("text-2xl")
-            # 看情況在特定時間通知
-            if dt.time(9, 15) <= now.time() <= dt.time(13, 30):
-                if change_percent >= strategy_num and group_type == "c":
-                    # c group
-                    alert_notify(
-                        f"{row['名稱']}[{row['代號']}] 目前上升超過 {strategy_num}%")
-                if change_percent <= -strategy_num and group_type == "c":
-                    # c group
-                    alert_notify(
-                        f"{row['名稱']}[{row['代號']}] 目前下跌超過 {strategy_num}%")
+            # 通知超過指定百分比
+            if change_percent >= strategy_num and group_type == "c":
+                alert_notify(
+                    f"{row['名稱']}[{row['代號']}] 目前突破最高價 {strategy_num}%")
+
             # 用1分K來畫折線圖
             fig_data = group_manger.get_candle(row['代號'], "1")
             fig = go.Figure(data=go.Scatter(x=fig_data["date"],
