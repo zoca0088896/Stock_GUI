@@ -9,12 +9,12 @@
         "group_a": {
             "upper": 10.0,
             "lower": -2.0,
-            "strategy": 5.1
+            "strategy": 0.1
         },
         "group_b": {
             "upper": 1.0,
             "lower": -2.0,
-            "strategy": 0.1
+            "strategy": 1.0
         },
         "group_c": {
             "upper": 10.0,
