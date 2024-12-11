@@ -54,8 +54,9 @@ def group_page(group_type: str, upper_bound: float, lower_bound: float, strategy
     # according user setting to refresh.
     # default is 30s
     # only refresh at 9:00 ~ 13:30
+    # 似乎只在本地運行無礙，docker會有無法刷新的問題(改用js在頁面內直接刷新)
     now = dt.datetime.now()
-    if now.time() >= dt.time(9, 0) and now.time() <= dt.time(13, 30):
+    if now.time() >= dt.time(9, 0) and now.time() <= dt.time(21, 30):
         ui.timer(user["group_refresh"], lambda: show_group.refresh(
             group_type, upper_bound, lower_bound, strategy_num))
 

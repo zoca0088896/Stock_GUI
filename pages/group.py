@@ -46,6 +46,9 @@ def show_group(group_type, upper_bound, lower_bound, strategy_num) -> None:
         ui.notify(f"Error: 刷新速度過快，已超過API速率限制60/min，請稍後再試。{e}")
     ui.button("返回前一頁", on_click=ui.navigate.back).classes(
         "fixed right-4 top-4")
+    # docker環境測試用
+    # 每30秒刷新整個頁面    
+    ui.run_javascript("window.setInterval(() => {window.location.reload()}, 30000)")
 
     # dark mode
     dark_mode = DarkMode()
